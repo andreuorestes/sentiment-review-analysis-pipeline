@@ -41,13 +41,15 @@ def load_data():
         df = df.fillna('')
 
         # Define columns that identify a unique review
-        group_cols = ['review', 'translated_review', 'name', 'sex', 'date', 'rate', 'review_title', 'image', 'num_reviews_usuario']
+        # Note: Excluding 'date' because dummy data has different dates for fragments of the same review
+        group_cols = ['review', 'translated_review', 'name', 'sex', 'rate', 'review_title', 'image', 'num_reviews_usuario']
         
         # Check which of these actually exist in the dataframe to avoid errors
         available_cols = [c for c in group_cols if c in df.columns]
         
         # Group by the available identifying columns
         aggregated = df.groupby(available_cols).agg({
+            'date': lambda x: x.iloc[0] if len(x) > 0 else '',
             'subcategory_fragment': lambda x: list(x),
             'subcategory_sentiment': lambda x: list(x),
             'category': lambda x: list(x),
