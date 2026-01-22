@@ -74,8 +74,10 @@ def get_reviews():
     """Returns reviews data as JSON."""
     return jsonify(REVIEWS_DATA)
 
+# Load data on startup (for both local and production)
+load_data()
+
 if __name__ == '__main__':
-    load_data()
     # Run slightly different config for local vs cloud
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=True)
