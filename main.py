@@ -40,14 +40,21 @@ def load_data():
         df = pd.read_csv(csv_path)
         df = df.fillna('')
 
-        # Define columns that identify a unique review
-        group_cols = ['review', 'translated_review', 'name', 'sex', 'date', 'rate', 'review_title', 'image', 'num_reviews_usuario']
+        # Define core columns that identify a unique review strictly
+        # We exclude metadata like 'review_title', 'rate', 'image' from grouping key 
+        # because slight variations or unique URLs in them can cause duplication.
+        group_cols = ['review', 'translated_review', 'name', 'sex', 'date']
         
-        # Check which of these actually exist in the dataframe to avoid errors
+        # Check which of these actually exist in the dataframe
         available_cols = [c for c in group_cols if c in df.columns]
         
         # Group by the available identifying columns
+        # For metadata fields that might vary or be missing, we take the first value (.iloc[0])
         aggregated = df.groupby(available_cols).agg({
+            'rate': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'review_title': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'image': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'num_reviews_usuario': lambda x: x.iloc[0] if len(x) > 0 else '',
             'subcategory_fragment': lambda x: list(x),
             'subcategory_sentiment': lambda x: list(x),
             'category': lambda x: list(x),
