@@ -1,0 +1,226 @@
+:root {
+    --primary-color: #003580; /* Booking Blue */
+    --accent-color: #006ce4;
+    --bg-color: #f5f5f5;
+    --text-color: #1a1a1a;
+    --text-muted: #595959;
+    --white: #ffffff;
+    --border-color: #e7e7e7;
+    
+    --sentiment-pos-bg: #dcfce7; /* Light Green */
+    --sentiment-pos-text: #14532d;
+    --sentiment-neg-bg: #fee2e2; /* Light Red */
+    --sentiment-neg-text: #7f1d1d;
+    --sentiment-neu-bg: #ffedd5; /* Light Orange */
+    --sentiment-neu-text: #7c2d12;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.app-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+
+.app-header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Reviews List */
+.reviews-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.review-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .review-card {
+        flex-direction: column;
+    }
+}
+
+/* Sidebar / User Info */
+.review-sidebar {
+    flex-basis: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid transparent; 
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.avatar-circle {
+    width: 48px;
+    height: 48px;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
+
+.user-name {
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.user-meta, .user-country {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Content */
+.review-content-wrapper {
+    flex-grow: 1;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.review-rating-box {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px 6px 6px 0; /* Leaf shape ish */
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.review-title-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.review-body {
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* Actions */
+.review-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.btn {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: #0051a8;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn-secondary:hover {
+    background-color: #f0f7ff;
+}
+
+/* AI Analysis Panel */
+.ai-analysis-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px dashed var(--border-color);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Sentiment Highlights */
+.highlight-positive {
+    background-color: var(--sentiment-pos-bg);
+    color: var(--sentiment-pos-text);
+    padding: 2px 4px;
+    border-radius: 4px;
+    border-bottom: 2px solid #86efac;
+}
+
+.highlight-negative {
+    background-color: var(--sentiment-neg-bg);
+    color: var(--sentiment-neg-text);
+    padding: 2px 4px;
+    border-radius: 4px;
+    border-bottom: 2px solid #fca5a5;
+}
+
+.highlight-neutral {
+    background-color: var(--sentiment-neu-bg);
+    color: var(--sentiment-neu-text);
+    padding: 2px 4px;
+    border-radius: 4px;
+    border-bottom: 2px solid #fdba74;
+}

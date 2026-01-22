@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <div class="logo">
+                <i class="fa-solid fa-hotel"></i> ReviewsDemo
+            </div>
+            <nav>
+                <!-- Nav placeholder -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="reviews-header">
+            <h1>Guest Reviews</h1>
+            <div class="metrics-placeholder" id="headerMetrics">
+                <!-- Potential aggregate metrics here -->
+            </div>
+        </div>
+
+        <div id="reviews-container" class="reviews-list">
+            <!-- Reviews will be injected here by JS -->
+            <div class="loading">Loading reviews...</div>
+        </div>
+    </main>
+
+    <!-- Template for a single Review Card -->
+    <template id="review-card-template">
+        <div class="review-card">
+            <div class="review-sidebar">
+                <div class="user-profile">
+                    <div class="avatar-circle">
+                        <span class="avatar-initials"></span>
+                    </div>
+                    <div class="user-details">
+                        <a href="#" class="user-name"></a>
+                        <div class="user-country">
+                            <span class="flag-icon"></span> <span class="country-text"></span>
+                        </div>
+                        <div class="user-meta">
+                            <span class="user-sex"></span> • <span class="user-reviews-count"></span> reviews
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review-content-wrapper">
+                <div class="review-header">
+                    <div class="review-rating-box">
+                        <span class="rating-score"></span>
+                    </div>
+                    <div class="review-title-meta">
+                        <h3 class="review-title"></h3>
+                        <span class="review-date"></span>
+                    </div>
+                </div>
+
+                <div class="review-body">
+                    <p class="review-text original-text"></p>
+                </div>
+
+                <div class="review-actions">
+                    <button class="btn btn-primary btn-apply-ai">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Apply IA
+                    </button>
+                    <button class="btn btn-secondary btn-analysis">
+                        <i class="fa-solid fa-chart-line"></i> Analysis
+                    </button>
+                </div>
+                
+                <!-- Hidden by default, shown after Apply IA -->
+                <div class="ai-analysis-panel hidden">
+                    <!-- Sentiment highlighted text will go here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
