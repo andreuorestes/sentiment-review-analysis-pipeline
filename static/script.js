@@ -129,17 +129,20 @@ function generateHighlightedText(fullText, fragments) {
     let processedText = fullText;
 
     // We iterate specific fragments. 
-    // Note: If multiple fragments are identical text but different sentiments, replaceAll handles all.
-    // Ideally we'd map "subcategory_fragment" to the sentiment needed.
+    // CRITICAL: Sort by length descending to ensure longer phrases are wrapped first.
+    // This allows shorter phrases inside (or identical phrases) to nest correctly,
+    // increasing opacity due to RGBA stacking.
+    fragments.sort((a, b) => (b.text || '').length - (a.text || '').length);
 
     fragments.forEach(frag => {
         if (!frag.text || frag.text.length < 2) return; // Skip empty/tiny
 
         const sentimentClass = getSentimentClass(frag.sentiment);
-        const span = `<span class="${sentimentClass}" title="${frag.category} - ${frag.subcategory}">${frag.text}</span>`;
+        const span = `<span class="${sentimentClass}" title="${frag.category}"> ${frag.text} </span>`;
 
         // Replace: This is case-sensitive usually
         // Using split/join is safe for basic replacement
+        // Note: nesting works because split finds text even inside existing tags if tags aren't inside the text
         processedText = processedText.split(frag.text).join(span);
     });
 

@@ -19,13 +19,13 @@
     --divider-color: #EBEBEB;
 
     /* Sentiment Colors (Soft/Pastel for non-intrusive metadata) */
-    --sentiment-pos-bg: #E6FFFA;
+    --sentiment-pos-bg: rgba(212, 237, 218, 0.4);
     --sentiment-pos-text: #008A70;
     /* Teal-ish green */
-    --sentiment-neg-bg: #FFF5F5;
+    --sentiment-neg-bg: rgba(248, 215, 218, 0.4);
     --sentiment-neg-text: #C53030;
     /* Soft red */
-    --sentiment-neu-bg: #FFFBEB;
+    --sentiment-neu-bg: rgba(255, 243, 205, 0.4);
     --sentiment-neu-text: #B7791F;
 
     --card-radius: 12px;
