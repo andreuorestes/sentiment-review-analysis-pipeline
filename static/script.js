@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchReviews() {
     const container = document.getElementById('reviews-container');
     try {
-        constresponse = await fetch('/api/reviews');
+        const response = await fetch('/api/reviews');
         if (!response.ok) throw new Error('Failed to fetch reviews');
 
         const reviews = await response.json(); // These are now grouped reviews
