@@ -28,85 +28,126 @@ async function fetchReviews() {
 }
 
 function createReviewCard(data) {
-    const template = document.getElementById('review-card-template');
-    const clone = template.content.cloneNode(true);
-    const card = clone.querySelector('.review-card');
+    const card = document.createElement('div');
+    card.className = 'review-card';
 
-    // -- Bind Data --
-
-    // User Profile
-    const nameStr = data.name || 'Anonymous';
-    clone.querySelector('.user-name').textContent = nameStr;
-    clone.querySelector('.avatar-initials').textContent = nameStr.charAt(0).toUpperCase();
-
-    // Logic for Image/Sex if available, otherwise defaults
-    if (data.image && data.image.startsWith('http')) {
-        const avatarDiv = clone.querySelector('.avatar-circle');
-        avatarDiv.style.backgroundImage = `url('${data.image}')`;
-        avatarDiv.style.backgroundSize = 'cover';
-        avatarDiv.style.backgroundPosition = 'center';
-        avatarDiv.textContent = ''; // remove initials
+    // -- Make whole card clickable --
+    if (data.review_url) {
+        card.onclick = (e) => {
+            // Prevent navigation if clicking buttons or interactions
+            if (e.target.closest('button') || e.target.closest('.btn')) return;
+            window.open(data.review_url, '_blank');
+        };
+        card.title = "View original review";
     }
 
-    const sex = data.sex || 'Unknown';
-    // Country logic - 'idiom' might be the language/country code
-    const lang = data.idiom || 'en';
-    clone.querySelector('.country-text').textContent = lang.toUpperCase();
-    // Just using a generic flag icon for now, could map lang to flag classes
-    clone.querySelector('.flag-icon').classname = 'flag-icon'; // Reset if needed
+    // 1. Title
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'review-card-title';
+    titleDiv.textContent = data.review_title || 'Review';
+    card.appendChild(titleDiv);
 
-    clone.querySelector('.user-sex').textContent = sex;
-    clone.querySelector('.user-reviews-count').textContent = data.num_reviews_usuario || '1';
+    // 2. User Info Row (Avatar + Name/Meta)
+    const userRow = document.createElement('div');
+    userRow.className = 'review-user-row';
 
-    // Review Content
-    const rating = data.rate || data.nota_media || 0;
-    clone.querySelector('.rating-score').textContent = rating;
+    // Avatar
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar-circle';
+    if (data.image && data.image.startsWith('http')) {
+        avatar.style.backgroundImage = `url('${data.image}')`;
+        avatar.style.backgroundSize = 'cover';
+        avatar.style.backgroundPosition = 'center';
+    } else {
+        const initial = (data.name || 'A').charAt(0).toUpperCase();
+        avatar.innerHTML = `<span class="avatar-initials">${initial}</span>`;
+    }
 
-    clone.querySelector('.review-title').textContent = data.review_title || 'Review';
-    clone.querySelector('.review-date').textContent = data.date || '';
+    // Name + Meta
+    const infoCol = document.createElement('div');
+    infoCol.className = 'user-info-text';
 
-    const originalText = data.review || '';
-    const translatedText = data.translated_review || originalText; // Fallback
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'user-name';
+    nameDiv.textContent = data.name || 'Anonymous';
 
-    const textP = clone.querySelector('.review-text');
-    textP.textContent = originalText;
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'user-meta-sub';
 
-    // -- Actions --
+    // Gender Sign Logic
+    let sexDisplay = data.sex || '?';
+    if (sexDisplay === 'F') sexDisplay = '♀';
+    if (sexDisplay === 'M') sexDisplay = '♂';
 
-    const btnApplyAI = clone.querySelector('.btn-apply-ai');
-    const btnAnalysis = clone.querySelector('.btn-analysis');
-    const analysisPanel = clone.querySelector('.ai-analysis-panel');
+    // Idiom
+    const lang = (data.idiom || 'en').toUpperCase();
 
-    btnApplyAI.addEventListener('click', () => {
-        // Toggle Logic
-        // 1. Switch text to Translated Review
-        // 2. Apply Highlights
+    metaDiv.textContent = `${sexDisplay} • ${lang}`;
 
-        // Check if already applied
-        if (btnApplyAI.classList.contains('active')) {
-            // Revert? user didn't specify revert, but good UX
-            // keeping it simple: just re-render highlights or do nothing
-            return;
-        }
+    infoCol.appendChild(nameDiv);
+    infoCol.appendChild(metaDiv);
 
+    userRow.appendChild(avatar);
+    userRow.appendChild(infoCol);
+    card.appendChild(userRow);
+
+    // 3. URL Text (Visible link as requested "que puedas clicar su URL")
+    if (data.review_url) {
+        const urlDiv = document.createElement('div');
+        urlDiv.className = 'review-url-tiny';
+        urlDiv.textContent = data.review_url;
+        card.appendChild(urlDiv);
+    }
+
+    // 4. Review Body
+    const bodyDiv = document.createElement('div');
+    bodyDiv.className = 'review-body';
+
+    const textP = document.createElement('div');
+    textP.className = 'review-text';
+    textP.textContent = data.review || '';
+    bodyDiv.appendChild(textP);
+    card.appendChild(bodyDiv);
+
+    // 5. Actions
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'review-actions';
+
+    const btnApplyAI = document.createElement('button');
+    btnApplyAI.className = 'btn btn-primary btn-apply-ai';
+    btnApplyAI.innerHTML = 'Apply AI';
+
+    btnApplyAI.onclick = (e) => {
+        e.stopPropagation(); // Don't trigger card link
         btnApplyAI.classList.add('active');
         btnApplyAI.innerHTML = '<i class="fa-solid fa-check"></i> AI Applied';
 
-        // Process text with highlights
-        const highlightedHTML = generateHighlightedText(translatedText, data.fragments);
-        textP.innerHTML = highlightedHTML;
+        // Apply highlights
+        const content = data.translated_review || data.review;
+        const highlighted = generateHighlightedText(content, data.fragments);
+        textP.innerHTML = highlighted;
+    };
 
-        // Show analysis panel if we have categories (optional, user asked for highlighting)
-        // User said: "subrayar los distintos fragmentos... y luego abajo, clicaremos... se categorizaran (analysis)"
-        // Let's keep Analysis button for metrics/categories list
-    });
+    const btnAnalysis = document.createElement('button');
+    btnAnalysis.className = 'btn btn-secondary btn-analysis';
+    btnAnalysis.innerHTML = '<i class="fa-solid fa-chart-line"></i> Analysis';
 
-    btnAnalysis.addEventListener('click', () => {
+    actionsDiv.appendChild(btnApplyAI);
+    actionsDiv.appendChild(btnAnalysis);
+    card.appendChild(actionsDiv);
+
+    // 6. Analysis Panel
+    const analysisPanel = document.createElement('div');
+    analysisPanel.className = 'ai-analysis-panel hidden';
+    card.appendChild(analysisPanel);
+
+    btnAnalysis.onclick = (e) => {
+        e.stopPropagation();
         analysisPanel.classList.toggle('hidden');
         if (!analysisPanel.classList.contains('hidden')) {
             renderAnalysis(analysisPanel, data.fragments);
         }
-    });
+    };
 
     return card;
 }

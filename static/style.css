@@ -315,3 +315,64 @@ body {
     padding: 2px 0;
     border-bottom: 2px solid var(--sentiment-neu-text);
 }
+
+/* --- New Review Card Layout Styles --- */
+.review-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    /* For positioning */
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.review-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.review-user-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-meta-sub {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.review-url-tiny {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    opacity: 0.8;
+}
+
+.review-url-tiny:hover {
+    text-decoration: underline;
+    opacity: 1;
+}
