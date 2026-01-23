@@ -40,6 +40,9 @@ def load_data():
         df = pd.read_csv(csv_path)
         df = df.fillna('')
 
+        # Normalize strange column names for easier access
+        df.rename(columns={'CDS_Typography_appearance-inherit__8be6e7 URL': 'review_url'}, inplace=True)
+
         # Define core columns that identify a unique review strictly
         # We exclude metadata like 'review_title', 'rate', 'image' from grouping key 
         # because slight variations or unique URLs in them can cause duplication.
@@ -55,6 +58,9 @@ def load_data():
             'review_title': lambda x: x.iloc[0] if len(x) > 0 else '',
             'image': lambda x: x.iloc[0] if len(x) > 0 else '',
             'num_reviews_usuario': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'review_url': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'idiom': lambda x: x.iloc[0] if len(x) > 0 else '',
+            'nota_media usuario': lambda x: x.iloc[0] if len(x) > 0 else '',
             'subcategory_fragment': lambda x: list(x),
             'subcategory_sentiment': lambda x: list(x),
             'category': lambda x: list(x),
